@@ -1,22 +1,41 @@
-html {
-  font-size: 14px;
+/* 1. Reseteos básicos para html/body */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* 2. Fondo completo + overlay */
 body {
-  margin-bottom: 60px;
+    background: url('/img/CVP.png') center center / cover no-repeat fixed;
+    position: relative;
+    z-index: 0;
+}
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.2);
+        z-index: -1;
+    }
+
+/* 3. Flex wrapper para sticky footer */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+    /* 4. Que el main crezca empujando el footer abajo */
+    .main-wrapper > main {
+        flex: 1;
+    }
+
+/* 5. Estilos opcionales */
+footer.footer {
+    background-color: white; /* o tu color de fondo */
 }

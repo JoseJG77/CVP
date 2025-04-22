@@ -361,3 +361,88 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+################################################################################
+## .gitignore para Visual Studio 2022, ASP.NET Core y .NET (adaptado)
+################################################################################
+
+## Ignorar archivos y carpetas generados por Visual Studio
+
+# Archivos de usuario y configuraciones personales
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Carpetas de resultados de compilación
+[Bb]in/
+[Oo]bj/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+[Aa]rchive/
+
+# Carpeta oculta que usa Visual Studio para almacenar datos temporales del IDE
+.vs/
+.vscode/
+.vsconfig/
+
+################################################################################
+## Ignorar archivos específicos de ASP.NET y .NET
+
+# Archivo de scaffolding
+ScaffoldingReadMe.txt
+
+# Archivos de configuración de paquetes NuGet y restauración
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+*.nupkg
+*.snupkg
+
+################################################################################
+## Ignorar archivos y carpetas generados por el sistema operativo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+################################################################################
+## Ignorar archivos de herramientas y extensiones comunes
+
+# ReSharper
+_ReSharper*/
+*.ReSharper
+*.ReSharper.user
+
+# Rider
+.idea/
+
+# NCrunch
+*.ncrunchproject
+*.ncrunchsolution
+
+# Registro de compilación y logs
+*.log
+
+################################################################################
+## Otras exclusiones
+
+# Archivos de lock de proyecto
+project.lock.json
+project.fragment.lock.json
+
+# Carpetas de artefactos y resultados
+artifacts/
+
+# Reportes de cobertura
+coverage.opencover.xml
+coverage.cobertura.xml
+
+# Historial de cambios (opcional, si usas extensiones que lo generen)
+.history/
