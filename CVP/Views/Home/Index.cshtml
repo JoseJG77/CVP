@@ -1,21 +1,148 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using CVP.Models
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+﻿@using CVP.ViewModels
+@model DashboardViewModel?
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
-@if (SignInManager.IsSignedIn(User))
+
+@if (Model == null)
 {
-    <div class="text-center">
-        <h1 class="display-4 text-white">¡Hola bienvenido!</h1>
-    </div>
 }
 else
 {
-    <div class="text-center">
-        <h1 class="display-4 text-white">¡Welcome! </h1>
-    </div>
-}
+   
+    <div class="container py-4">
+        <div class="row g-4 mb-4">
+            <div class="col-md-12">
+                <div class="card text-white" style="background-color:#00345D;">
+                    <div class="card-body text-center">
+                        <h2 class="fw-bold" style="color:#00345D">¡Bienvenido a CVP!</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white mb-3" style="background-color:#00345D;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" style="color:#00345D">Visitas del día</h5>
+                        <h2 class="fw-bold" style="color:#00345D">@Model.TotalVisitsToday</h2>
+                    </div>
+                    <a asp-controller="VisitRecords" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Nueva Visita</a>
+                </div>
+                <div class="card text-white mb-3" style="background-color:#00345D;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" style="color:#00345D">Documentos recibidos</h5>
+                        <h2 class="fw-bold" style="color:#00345D">6</h2>
+                    </div>
+                    <a asp-controller="VisitRecords" asp-action="Create" class="btn btn-primary"><i class="bi bi-eye-fill"></i> Ver</a>
+                </div>
+                <div class="card text-white" style="background-color:#00345D;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" style="color:#00345D">Tramites en proceso</h5>
+                        <h2 class="fw-bold" style="color:#00345D">2</h2>
+                    </div>
+                    <a asp-controller="VisitRecords" asp-action="Create" class="btn btn-primary"><i class="bi bi-eye-fill"></i> Ver</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Por Tipo</h6>
+                        <canvas id="procedureChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Visitas por Hora</h6>
+                        <div class="flex-fill">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Por Municipio</h6>
+                        <canvas id="municipalityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+    <script>
+        const procLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VisitsByProcedure.Select(x => x.Name)));
+        const procData   = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VisitsByProcedure.Select(x => x.Value)));
+
+        new Chart(
+            document.getElementById('procedureChart'),
+            {
+                type: 'bar',
+                data: {
+                    labels: procLabels,
+                    datasets: [{
+                        label: 'Visitas',
+                        data: procData,
+                        backgroundColor: 'rgba(0,52,93,0.8)'
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            }
+        );
+
+        const munLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VisitsByMunicipality.Select(x => x.Name)));
+        const munData   = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VisitsByMunicipality.Select(x => x.Value)));
+
+        new Chart(
+            document.getElementById('municipalityChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: munLabels,
+                    datasets: [{
+                        data: munData,
+                        backgroundColor: munLabels.map((_, i) => `rgba(0,52,93,${0.5 + 0.5 * i / munLabels.length})`)
+                    }]
+                },
+                options: {
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            }
+        );
+
+        const hourLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VisitsByHour.Select(x => x.Name)));
+        const hourData   = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VisitsByHour.Select(x => x.Value)));
+
+        new Chart(
+            document.getElementById('timeChart'),
+            {
+                type: 'line',
+                data: {
+                    labels: hourLabels,
+                    datasets: [{
+                        label: 'Visitas por Hora',
+                        data: hourData,
+                        borderColor: 'rgba(0,52,93,0.8)',
+                        tension: 0.3,
+                        fill: false,
+                        pointRadius: 3
+                    }]
+                },
+                options: {
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        x: { title: { display: true, text: 'Hora' } },
+                        y: { beginAtZero: true, title: { display: true, text: 'Visitas' } }
+                    }
+                }
+            }
+        );
+    </script>
+    }
+}

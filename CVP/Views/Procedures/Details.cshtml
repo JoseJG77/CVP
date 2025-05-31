@@ -1,0 +1,67 @@
+﻿@model CVP.Models.Procedure
+
+@{
+    ViewData["Title"] = "Detalles de Procedimiento";
+}
+
+<style>
+    /* Fondo difuminado */
+    .backdrop-detail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+    }
+
+    /* Contenedor para centrar la tarjeta */
+    .center-detail {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Tarjeta del diálogo de detalles */
+    .card-detail {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .dl-row {
+        margin-bottom: 1rem;
+    }
+
+        .dl-row dt {
+            font-weight: bold;
+        }
+</style>
+
+<div class="backdrop-detail"></div>
+
+<div class="center-detail">
+    <div class="card shadow-sm card-detail">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Detalles de Procedimiento</h3>
+            <dl class="row">
+                <div class="dl-row">
+                    <dt class="col-sm-3">Categoría</dt>
+                    <dd class="col-sm-9">@Model.Category</dd>
+                </div>
+                <div class="dl-row">
+                    <dt class="col-sm-3">Nombre</dt>
+                    <dd class="col-sm-9">@Model.Name</dd>
+                </div>
+            </dl>
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>

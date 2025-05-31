@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CVP.Models.Applicant>
+@{
+    ViewData["Title"] = "Solicitantes";
+}
+<h1>@ViewData["Title"]</h1>
+<p><a asp-action="Create" class="btn btn-primary">Nuevo Solicitante</a></p>
+<table class="table">
+    <thead>
+        <tr><th>Nombre</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.Name</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@a.Id">Ver</a> |
+                    <a asp-action="Edit" asp-route-id="@a.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@a.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

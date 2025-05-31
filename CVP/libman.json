@@ -1,0 +1,27 @@
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "sweetalert2@11.21.0",
+      "destination": "wwwroot/lib/sweetalert2/"
+    },
+    {
+      "library": "Chart.js@4.4.1",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "library": "Chart.js@3.9.1",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "library": "luxon@3.5.0",
+      "destination": "wwwroot/lib/luxon/"
+    }
+  ]
+}

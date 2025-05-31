@@ -1,0 +1,40 @@
+﻿@model CVP.ViewModels.QuarterlyReportViewModel
+@{
+    ViewData["Title"] = $"Reporte Cuatrimestral {Model.Year} – Q{Model.Quarter}";
+}
+<h2>@ViewData["Title"]</h2>
+
+@foreach (var cat in Model.Categories)
+{
+    <h4>@cat.Category</h4>
+    <table class="table table-bordered table-sm bg-light">
+        <thead class="table-light">
+            <tr>
+                <th>No.</th>
+                <th>Actividad</th>
+                @foreach (var m in Model.Months)
+                {
+                    <th>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(m)</th>
+                }
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var idx = 0;
+            }
+            @foreach (var proc in cat.Procedures)
+            {
+                <tr>
+                    <td>@(++idx)</td>
+                    <td>@proc.Name</td>
+                    @foreach (var d in proc.Data)
+                    {
+                        <td>@d.Total</td>
+                    }
+                    <td>@proc.Data.Sum(x => x.Total)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

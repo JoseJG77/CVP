@@ -1,0 +1,78 @@
+﻿@* Views/VisitRecords/Details.cshtml *@
+@model CVP.Models.VisitRecord
+@{
+    ViewData["Title"] = "Detalles de Visita";
+}
+
+<style>
+    .backdrop-details {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+    }
+    .container-details {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .card-details {
+        width: 100%;
+        max-width: 500px;
+    }
+    .dl-row {
+        margin-bottom: 1rem;
+    }
+    .dl-label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="backdrop-details" onclick="window.location='@Url.Action("Index","VisitRecords")'"></div>
+
+<div class="container-details">
+    <div class="card shadow-sm card-details">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Detalles de Visita</h3>
+            <dl class="row">
+                <div class="dl-row">
+                    <dt class="col-sm-3 dl-label">Fecha</dt>
+                    <dd class="col-sm-9">@Model.Date.ToString("dd/MM/yyyy HH:mm")</dd>
+                </div>
+                <div class="dl-row">
+                    <dt class="col-sm-3 dl-label">Trámite</dt>
+                    <dd class="col-sm-9">@Model.Procedure?.Name</dd>
+                </div>
+                <div class="dl-row">
+                    <dt class="col-sm-3 dl-label">Solicitante</dt>
+                    <dd class="col-sm-9">@Model.Applicant?.Name</dd>
+                </div>
+                <div class="dl-row">
+                    <dt class="col-sm-3 dl-label">Municipio</dt>
+                    <dd class="col-sm-9">@Model.Municipality?.Name</dd>
+                </div>
+                <div class="dl-row">
+                    <dt class="col-sm-3 dl-label">Género</dt>
+                    <dd class="col-sm-9">@((Model.Gender == 'M') ? "Hombre" : "Mujer")</dd>
+                </div>
+            </dl>
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <button type="button" class="btn btn-primary"
+                        onclick="window.location='@Url.Action("Edit","VisitRecords", new { id = Model.Id })'">
+                    Editar
+                </button>
+                <button type="button" class="btn btn-secondary"
+                        onclick="window.location='@Url.Action("Index","VisitRecords")'">
+                    Volver
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

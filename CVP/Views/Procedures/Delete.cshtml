@@ -1,0 +1,67 @@
+﻿@model CVP.Models.Procedure
+
+@{
+    ViewData["Title"] = "Eliminar Procedimiento";
+}
+
+<style>
+    /* Fondo difuminado */
+    .backdrop-delete {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+    }
+
+    /* Contenedor para centrar la tarjeta */
+    .center-delete {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Tarjeta del diálogo de eliminación */
+    .card-delete {
+        width: 100%;
+        max-width: 400px;
+    }
+</style>
+
+<div class="backdrop-delete"></div>
+
+<div class="center-delete">
+    <div class="card shadow-sm card-delete">
+        <div class="card-body text-center">
+            <h3 class="card-title mb-4">Eliminar Procedimiento</h3>
+            <p>¿Seguro que deseas eliminar <strong>@Model.Name</strong>?</p>
+            <form id="frmDelete" asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('frmDelete').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡No podrás deshacer esto!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'No, cancelar'
+        }).then(r => r.isConfirmed && e.target.submit());
+    });
+</script>

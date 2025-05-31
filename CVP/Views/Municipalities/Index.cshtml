@@ -1,0 +1,22 @@
+﻿@model IEnumerable<CVP.Models.Municipality>
+@{
+    ViewData["Title"] = "Municipios/Departamentos";
+}
+<h1>@ViewData["Title"]</h1>
+<p><a asp-action="Create" class="btn btn-primary">Nuevo Municipio/Departamento</a></p>
+<table class="table">
+    <thead><tr><th>Nombre</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.Name</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@m.Id">Ver</a> |
+                    <a asp-action="Edit" asp-route-id="@m.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@m.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

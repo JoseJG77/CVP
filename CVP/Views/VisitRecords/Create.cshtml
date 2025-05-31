@@ -1,0 +1,162 @@
+﻿@model CVP.Models.VisitRecord
+
+@{
+    ViewData["Title"] = "Registrar Visita";
+}
+
+
+<style>
+    .visit-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+        cursor: default;
+    }
+
+    .visit-container {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+    }
+
+    .visit-card {
+        max-width: 900px;
+        width: 90%;
+        margin: 2rem 0; 
+    }
+
+        .visit-card .card-body {
+            padding: 2rem; 
+        }
+
+    .btn-close-white {
+        filter: invert(1);
+    }
+</style>
+
+
+<div class="visit-backdrop"></div>
+
+
+<div class="d-flex align-items-center justify-content-center visit-container">
+    <div class="card visit-card shadow-lg" style="position: relative;">
+        <button type="button"
+                class="btn-close btn-close-white position-absolute"
+                style="top: 1.25rem; right: 1.25rem;"
+                aria-label="Cerrar"
+                onclick="window.location='@Url.Action("Index","VisitRecords")'">
+        </button>
+
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Registrar Visita</h3>
+
+            <form id="frmVisitCreate" asp-action="Create" method="post">
+                <div asp-validation-summary="All" class="text-danger mb-4"></div>
+
+                <div class="row gy-4">
+                    <div class="col-md-4">
+                        <label asp-for="ProcedureId" class="form-label">Trámite</label>
+                        <div class="input-group">
+                            <select asp-for="ProcedureId"
+                                    class="form-select"
+                                    asp-items="@(new SelectList(ViewBag.Procedures, "Id","Name"))">
+                                <option value="">--Seleccione--</option>
+                            </select>
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    title="Agregar Trámite"
+                                    onclick="window.location='@Url.Action("Create","Procedures")'">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ProcedureId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="ApplicantId" class="form-label">Solicitante</label>
+                        <div class="input-group">
+                            <select asp-for="ApplicantId"
+                                    class="form-select"
+                                    asp-items="@(new SelectList(ViewBag.Applicants, "Id","Name"))">
+                                <option value="">--Seleccione--</option>
+                            </select>
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    title="Agregar Solicitante"
+                                    onclick="window.location='@Url.Action("Create","Applicants")'">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ApplicantId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="MunicipalityId" class="form-label">Municipio</label>
+                        <div class="input-group">
+                            <select asp-for="MunicipalityId"
+                                    class="form-select"
+                                    asp-items="@(new SelectList(ViewBag.Municipalities, "Id","Name"))">
+                                <option value="">--Seleccione--</option>
+                            </select>
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    title="Agregar Municipio"
+                                    onclick="window.location='@Url.Action("Create","Municipalities")'">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="MunicipalityId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <input asp-for="Date" type="hidden" />
+
+                <div class="row gy-4 mt-4">
+                    <div class="col-md-4">
+                        <label asp-for="Gender" class="form-label">Género</label>
+                        <select asp-for="Gender" class="form-select">
+                            <option value="">--Seleccione--</option>
+                            <option value="M">Hombre</option>
+                            <option value="F">Mujer</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-5 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success me-3">
+                        <i class="bi bi-save me-1"></i> Guardar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const form = document.getElementById('frmVisitCreate');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Confirmar registro de visita?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, registrar',
+                cancelButtonText: 'No, revisar'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+}

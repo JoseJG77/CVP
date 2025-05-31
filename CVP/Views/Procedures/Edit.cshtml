@@ -1,0 +1,85 @@
+﻿@model CVP.Models.Procedure
+
+@{
+    ViewData["Title"] = "Editar Procedimiento";
+}
+
+<style>
+    /* Fondo difuminado (blur) */
+    .backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+    }
+
+    /* Contenedor principal para centrar la tarjeta */
+    .center-container {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Tarjeta del formulario */
+    .card-edit {
+        width: 100%;
+        max-width: 500px;
+    }
+</style>
+
+<div class="backdrop"></div>
+
+<div class="center-container">
+    <div class="card shadow-sm card-edit">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Editar Procedimiento</h3>
+            <form id="frmEdit" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Category" class="form-label"></label>
+                    <input asp-for="Category" class="form-control" placeholder="Categoría" />
+                    <span asp-validation-for="Category" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Nombre del trámite" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a asp-action="Index" class="text-decoration-none text-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('frmEdit').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Confirmar cambios?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'No, revisar'
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                e.target.submit();
+            }
+        });
+    });
+</script>

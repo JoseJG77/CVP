@@ -1,41 +1,168 @@
-/* 1. Reseteos básicos para html/body */
+/* 1. Reseteos básicos para html y body */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* 2. Fondo completo + overlay */
-body {
-    background: url('/img/CVP.png') center center / cover no-repeat fixed;
+/* 2. Flex wrapper para sticky footer */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Asegura que el contenido flote por encima del fondo */
+    position: relative;
+    z-index: 1;
+}
+    /* El <main> crece empujando el footer al fondo */
+    .main-wrapper > main {
+        flex: 1;
+    }
+
+/* 3. Fondo dinámico con pseudo-elemento y opacidad según estado */
+body.bg-image {
     position: relative;
     z-index: 0;
 }
 
-    body::before {
+    body.bg-image::before {
         content: "";
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0,0,0,0.2);
+        background: url('/img/CVP4.png') no-repeat center center fixed;
+        background-size: contain;
         z-index: -1;
+        opacity: 0.2; /* valor por defecto (logged-out) */
+        transition: opacity 0.3s ease;
     }
 
-/* 3. Flex wrapper para sticky footer */
-.main-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-    /* 4. Que el main crezca empujando el footer abajo */
-    .main-wrapper > main {
-        flex: 1;
+    body.bg-image.logged-in::before {
+        opacity: 0.5; /* más visible cuando está logueado */
     }
 
-/* 5. Estilos opcionales */
+    body.bg-image.logged-out::before {
+        opacity: 1; /* totalmente visible cuando está deslogueado */
+    }
+
+/* 4. Footer transparente */
 footer.footer {
-    background-color: white; /* o tu color de fondo */
+    background-color: transparent !important;
 }
+
+    footer.footer .container {
+        background-color: transparent !important;
+    }
+
+/* 5. Indicador de estado en el logo CVP */
+.status-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    margin-right: 0.5rem;
+    font-weight: 600;
+    color: #fff !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.status-indicator--active {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+}
+
+.status-indicator--inactive {
+    background: linear-gradient(135deg, #f44336, #c62828);
+}
+
+.status-indicator:hover {
+    transform: translateY(-2px);
+}
+
+/* 6. Tipografía global */
+body, .navbar-nav .nav-link, footer {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+:root {
+    --bs-primary: #00345D;
+    --bs-primary-rgb: 0,52,93;
+}
+
+/* Botones sólidos “primary” */
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+        background-color: #002A4D; /* un poco más oscuro */
+        border-color: #002A4D;
+        box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.5);
+    }
+
+/* Botones outline “primary” */
+.btn-outline-primary {
+    color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus,
+    .btn-outline-primary:active {
+        background-color: var(--bs-primary) !important;
+        color: #fff !important;
+        border-color: var(--bs-primary) !important;
+    }
+
+/* 1. Fondo suave detrás de todo el contenido */
+.container.py-4 {
+    background-color: #f0f2f5; /* gris muy claro */
+}
+
+/* 2. Cards con fondo completamente blanco para destacar */
+.card {
+    background-color: #ffffff !important;
+}
+
+/* 3. Tabla con líneas separadoras entre filas y columnas */
+.table {
+    border-collapse: separate; /* permitir separación */
+    border-spacing: 0; /* sin espacio extra, usamos borders */
+    width: 100%;
+}
+
+    .table th,
+    .table td {
+        border-bottom: 1px solid #dee2e6; /* línea fina horizontal */
+        border-right: 1px solid #dee2e6; /* línea fina vertical */
+    }
+
+        .table th:last-child,
+        .table td:last-child {
+            border-right: none; /* quitar borde extra al final */
+        }
+
+    /* 4. Encabezado de la tabla con fondo y borde más marcado */
+    .table thead th {
+        background-color: var(--bs-primary);
+        color: #fff;
+        border-bottom: 2px solid #002A4D; /* línea más gruesa en el header */
+    }
+
+    /* 5. Opcional: filas impares un pelín más claras */
+    .table tbody tr:nth-child(odd) {
+        background-color: #fcfcfc;
+    }
+/* Hace que cualquier contenedor con .table-scroll sea scrollable */
+.table-scroll {
+    max-height: 60vh; /* o el alto que prefieras, p. ej. 400px */
+    overflow-y: auto; /* scroll vertical */
+}
+

@@ -446,3 +446,4 @@ coverage.cobertura.xml
 
 # Historial de cambios (opcional, si usas extensiones que lo generen)
 .history/
+/CVP/wwwroot/img/CVP.png

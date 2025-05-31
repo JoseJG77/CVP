@@ -10,8 +10,9 @@ namespace CVP.Data
             : base(options)
         {
         }
-
-        // Si necesitas agregar otras entidades (por ejemplo, para otros módulos), puedes hacerlo aquí:
-        // public DbSet<OtroModelo> Otros { get; set; }
+        public DbSet<Procedure> Procedures { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<Municipality> Municipalities { get; set; }
+        public DbSet<VisitRecord> VisitRecords { get; set; }
     }
 }

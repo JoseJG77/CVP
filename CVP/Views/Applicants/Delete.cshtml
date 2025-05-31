@@ -1,0 +1,26 @@
+﻿@model CVP.Models.Applicant
+@{
+    ViewData["Title"] = "Eliminar Solicitante";
+}
+<h1>@ViewData["Title"]</h1>
+<p>¿Seguro que deseas eliminar <strong>@Model.Name</strong>?</p>
+<form id="frmDelete" asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+@section Scripts {
+    <script>
+        document.getElementById('frmDelete').addEventListener('submit', function(e){
+          e.preventDefault();
+          Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡No podrás deshacer esta acción!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'No, cancelar'
+          }).then(r=> r.isConfirmed && this.submit());
+        });
+    </script>
+}

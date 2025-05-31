@@ -1,0 +1,166 @@
+﻿@model CVP.Models.VisitRecord
+
+@{
+    ViewData["Title"] = "Editar Visita";
+}
+
+<style>
+   .edit-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .edit-container {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+    }
+
+    .edit-close-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        z-index: 25;
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        color: #6c757d;
+    }
+
+        .edit-close-btn:hover {
+            color: #343a40;
+        }
+
+    .edit-card {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 1rem;
+    }
+</style> <div class="edit-backdrop" onclick="window.location='@Url.Action("Index","VisitRecords")'"></div>  <div class="d-flex align-items-center justify-content-center edit-container">
+    <div class="card shadow-sm edit-card" style="position: relative;">
+         <button type="button" class="edit-close-btn" aria-label="Cerrar" onclick="window.location='@Url.Action("Index","VisitRecords")'"> &times; </button>
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Editar Visita</h3>
+            <form id="frmVisitEdit" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <label asp-for="ProcedureId" class="form-label">Trámite</label>
+                        <div class="input-group">
+                            <select asp-for="ProcedureId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Procedures, "Id", "Name", Model.ProcedureId))">
+                                <option value="">--Seleccione--</option>
+                                <option disabled>───────────────</option>
+                                @foreach (var item in (List<CVP.Models.Procedure>)ViewBag.Procedures)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    title="Crear nuevo trámite"
+                                    onclick="window.location='@Url.Action("Create","Procedures")'">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ProcedureId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ApplicantId" class="form-label">Solicitante</label>
+                        <div class="input-group">
+                            <select asp-for="ApplicantId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Applicants, "Id", "Name", Model.ApplicantId))">
+                                <option value="">--Seleccione--</option>
+                                <option disabled>───────────────</option>
+                                @foreach (var item in (List<CVP.Models.Applicant>)ViewBag.Applicants)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    title="Crear nuevo solicitante"
+                                    onclick="window.location='@Url.Action("Create","Applicants")'">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ApplicantId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row gy-3 mt-3">
+                    <div class="col-md-6">
+                        <label asp-for="MunicipalityId" class="form-label">Municipio</label>
+                        <div class="input-group">
+                            <select asp-for="MunicipalityId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Municipalities, "Id", "Name", Model.MunicipalityId))">
+                                <option value="">--Seleccione--</option>
+                                <option disabled>───────────────</option>
+                                @foreach (var item in (List<CVP.Models.Municipality>)ViewBag.Municipalities)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    title="Crear nuevo municipio"
+                                    onclick="window.location='@Url.Action("Create","Municipalities")'">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="MunicipalityId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Gender" class="form-label">Género</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">--Seleccione--</option>
+                            <option value="M">Hombre</option>
+                            <option value="F">Mujer</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <input asp-for="Date" type="hidden" />
+
+                <div class="mt-4 d-flex justify-content-center gap-3">
+                    <button type="submit" class="btn btn-success px-4">Guardar</button>
+                    <button type="button"
+                            class="btn btn-secondary px-4"
+                            onclick="window.location='@Url.Action("Index","VisitRecords")'">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.getElementById('frmVisitEdit').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+        title: '¿Confirmar cambios?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, guardar',
+        cancelButtonText: 'No, revisar'
+        }).then(function(result) {
+        if (result.isConfirmed) form.submit();
+        });
+        });
+    </script>
+}

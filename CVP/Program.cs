@@ -5,14 +5,11 @@ using CVP.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrar el DbContext con SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registrar Identity con la clase personalizada ApplicationUser
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    // Configuración básica de contraseñas y otras opciones de seguridad
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -23,7 +20,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// Agregar servicios para controladores y vistas (MVC) y Razor Pages (para las vistas de Identity)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -40,19 +36,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Importante: primero autenticación, luego autorización.
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Ruta por defecto
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Mapear las páginas Razor (para las vistas scaffolded de Identity)
 app.MapRazorPages();
 
-// Aplicar migraciones automáticamente: esto creará/actualizará la base de datos (app.db)
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();

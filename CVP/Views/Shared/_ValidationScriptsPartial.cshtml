@@ -1,2 +1,63 @@
-﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+﻿@model CVP.Models.LoginViewModel
+
+<form asp-controller="Account" asp-action="Login" method="post" id="frmLoginModal">
+    <div class="modal-body">
+        <div class="form-group mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-check mb-3">
+            <input asp-for="RememberMe" class="form-check-input" />
+            <label asp-for="RememberMe" class="form-check-label"></label>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('frmLoginModal').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var form = this;
+            fetch(form.action, {
+                method: 'POST',
+                headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
+                body: new FormData(form)
+            })
+            .then(response => {
+                if (response.headers.get('content-type').includes('application/json')) {
+                    return response.json().then(data => {
+                        if (data.success) {
+                            var modalEl = document.getElementById('loginModal');
+                            var bsModal  = bootstrap.Modal.getInstance(modalEl);
+                            bsModal.hide();
+                            location.reload();
+                        }
+                    });
+                }
+                return response.text().then(html => {
+                    var modalContent = document.querySelector('#loginModal .modal-content');
+                    modalContent.innerHTML = html;
+                });
+            })
+            .catch(err => console.error(err));
+        });
+    </script>
+}

@@ -1,0 +1,32 @@
+﻿@model CVP.Models.Applicant
+@{
+    ViewData["Title"] = "Editar Solicitante";
+}
+<h1>@ViewData["Title"]</h1>
+<form id="frmEdit" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('frmEdit').addEventListener('submit', function(e){
+          e.preventDefault();
+          Swal.fire({
+            title: '¿Confirmar cambios?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'No, revisar'
+          }).then(r=> r.isConfirmed && this.submit());
+        });
+    </script>
+}

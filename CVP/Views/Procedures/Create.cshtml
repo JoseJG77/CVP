@@ -1,0 +1,112 @@
+﻿@model CVP.Models.Procedure
+
+@{
+    ViewData["Title"] = "Nuevo tipo de trámite";
+}
+
+<style>
+    /* Fondo difuminado */
+    .proc-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+        cursor: default;
+    }
+
+    /* Contenedor centrado */
+    .proc-container {
+        position: relative;
+        z-index: 20;
+        height: 100vh;
+    }
+
+    /* Card compacto */
+    .proc-card {
+        max-width: 400px;
+        width: 90%;
+    }
+
+    /* Botón cerrar */
+    .proc-close-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        z-index: 25;
+        background: transparent;
+        border: none;
+        font-size: 1.25rem;
+        color: #6c757d;
+    }
+
+        .proc-close-btn:hover {
+            color: #343a40;
+        }
+</style>
+
+<div class="proc-backdrop"></div>
+
+<div class="d-flex align-items-center justify-content-center proc-container">
+    <div class="card proc-card shadow-sm position-relative">
+        <button type="button"
+                class="proc-close-btn"
+                aria-label="Cerrar"
+                onclick="window.location='@Url.Action("Index","Procedures")'">
+            &times;
+        </button>
+
+        <div class="card-body">
+            <h3 class="card-title text-center mb-3">Nuevo tipo de trámite</h3>
+
+            <form id="frmCreate" asp-action="Create" method="post">
+                <div class="mb-3">
+                    <label asp-for="Category" class="form-label"></label>
+                    <input asp-for="Category"
+                           class="form-control"
+                           placeholder="Categoría..." />
+                    <span asp-validation-for="Category" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Nombre del trámite..." />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i> Guardar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document
+          .getElementById('frmCreate')
+          .addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+              title: '¿Confirmar creación?',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Sí, crear',
+              cancelButtonText: 'No, cancelar'
+            }).then(result => {
+              if (result.isConfirmed) this.submit();
+            });
+          });
+    </script>
+}
